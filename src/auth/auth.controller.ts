@@ -5,22 +5,19 @@ import {
   HttpException,
   HttpStatus,
   Get,
-  Req,
-  UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CreateUserDto } from '@user/dto/user.create.dto';
 import { RegistrationStatus } from './interfaces/registration-status.interface';
 import { AuthService } from './auth.service';
 import { LoginStatus } from './interfaces/login-status.interface';
 import { LoginUserDto } from '../users/dto/user-login.dto';
-import { JwtPayload } from './interfaces/payload.interface';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
+  @Post('signup')
   public async register(
     @Body() createUserDto: CreateUserDto,
   ): Promise<RegistrationStatus> {
@@ -40,9 +37,8 @@ export class AuthController {
     return await this.authService.login(loginUserDto);
   }
 
-  @Get('whoami')
-  @UseGuards(AuthGuard())
-  public async testAuth(@Req() req: any): Promise<JwtPayload> {
-    return req.user;
+  @Get('account-verification')
+  public async emailConfirmation(@Query() query): Promise<void> {
+    console.log(query.id);
   }
 }
