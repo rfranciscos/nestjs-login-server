@@ -1,0 +1,46 @@
+[
+  {
+    "name": "production",
+    "type": "postgres",
+    "synchronize": false,
+    "dropSchema": false,
+    "logging": true
+  },
+  {
+    "name": "development",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5445,
+    "username": "postgres",
+    "password": "auth",
+    "database": "postgres",
+    "synchronize": false,
+    "logging": true,
+    "entities": ["dist/**/*.entity.{ts,js}"],
+    "migrations": ["dist/hasura/migration/**/*.{ts,js}"],
+    "subscribers": ["dist/subscriber/**/*.{ts,js}"],
+    "cli": {
+      "entitiesDir": "dist/**/*.entity.{ts,js}",
+      "migrationsDir": "dist/hasura/migration",
+      "subscribersDir": "dist/subscriber"
+    }
+  },
+  {
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5445,
+    "username": "postgres",
+    "password": "auth",
+    "database": "postgres",
+    "synchronize": false,
+    "logging": true,
+    "entities": ["dist/**/*.entity.{ts,js}"],
+    "migrations": ["dist/hasura/migration/**/*.{ts,js}"],
+    "subscribers": ["dist/subscriber/**/*.{ts,js}"],
+    "cli": {
+      "entitiesDir": "dist",
+      "migrationsDir": "dist/hasura/migration",
+      "subscribersDir": "dist/subscriber"
+    }
+  }
+]
