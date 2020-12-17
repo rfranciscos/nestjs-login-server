@@ -7,12 +7,16 @@ import { toUserDto } from '@shared/mapper';
 import { CreateUserDto } from './dto/user.create.dto';
 import { LoginUserDto } from './dto/user-login.dto';
 import { comparePasswords } from '@shared/utils';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class UsersService {
+  private emailService: EmailService;
+
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
+    emailService = new EmailService(),
   ) {}
 
   async findOne(options?: Record<string, unknown>): Promise<UserDto> {
@@ -57,7 +61,25 @@ export class UsersService {
     });
 
     await this.userRepo.save(user);
-
+    this.emailService.send({
+      Source: '',
+      Destination: {
+        ToAddresses: [email],
+      },
+      Message: {
+        Subject: {
+          Data: 'Confirmação de e-mail',
+          Charset: 'utf-8',
+        },
+        Body: {
+          Text: {
+            Data: `Olá, ${username}!\nObrigado pelo seu cadastro em nossa plataforma.\nSegue link para hablitar sua conta `,
+            Charset: 'utf-8',
+          },
+        },
+      },
+      ConfigurationSetName: 'Empresa',
+    });
     return toUserDto(user);
   }
 
