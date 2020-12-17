@@ -15,6 +15,7 @@ export class UserEntity {
   @Column({ type: 'text', nullable: false }) email: string;
   @CreateDateColumn() createdOn?: Date;
   @CreateDateColumn() updatedOn?: Date;
+  @Column({ type: 'boolean', nullable: false, default: false }) status: boolean;
 
   @BeforeInsert()
   async hashPassword() {
