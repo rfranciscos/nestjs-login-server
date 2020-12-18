@@ -1,10 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import SES from 'aws-sdk/clients/ses';
+import * as SES from 'aws-sdk/clients/ses';
 
 @Injectable()
 export class EmailService {
+  private client: SES;
+
+  constructor() {
+    this.client = new SES({
+      region: 'sa-east-1',
+    });
+  }
+
   send = async (emailRequest: SES.SendEmailRequest): Promise<void> => {
-    const client = new SES();
-    await client.sendEmail(emailRequest).promise();
+    await this.client.sendEmail(emailRequest).promise();
   };
 }

@@ -62,8 +62,8 @@ export class UsersService {
     });
 
     await this.userRepo.save(user);
-    this.emailService.send({
-      Source: '',
+    await this.emailService.send({
+      Source: process.env.SOURCE_EMAIL,
       Destination: {
         ToAddresses: [email],
       },
@@ -79,7 +79,6 @@ export class UsersService {
           },
         },
       },
-      ConfigurationSetName: 'Empresa',
     });
     return toUserDto(user);
   }
