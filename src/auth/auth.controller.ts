@@ -40,5 +40,6 @@ export class AuthController {
   @Get('account-verification')
   public async emailConfirmation(@Query() query): Promise<void> {
     console.log(query.id);
+    await this.authService.accountVerification(query.id);
   }
 }

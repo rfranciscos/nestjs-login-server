@@ -16,8 +16,9 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
-    emailService = new EmailService(),
-  ) {}
+  ) {
+    this.emailService = new EmailService();
+  }
 
   async findOne(options?: Record<string, unknown>): Promise<UserDto> {
     const user = await this.userRepo.findOne(options);
@@ -81,6 +82,16 @@ export class UsersService {
       ConfigurationSetName: 'Empresa',
     });
     return toUserDto(user);
+  }
+
+  async accountVerification(id: string): Promise<void> {
+    const user = await this.userRepo.findOne({ where: { id } });
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+    }
+
+    await this.userRepo.update({ id }, { status: true });
   }
 
   private _sanitizeUser(user: UserEntity) {

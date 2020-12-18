@@ -54,6 +54,10 @@ export class AuthService {
     return user;
   }
 
+  async accountVerification(id: string): Promise<void> {
+    await this.usersService.accountVerification(id);
+  }
+
   private _createToken({ username }: UserDto): any {
     const expiresIn = process.env.EXPIRESIN;
 
